@@ -66,8 +66,7 @@ API Behavior
     Assert.equal('mmm', config.get("var2.var22"));  # from main.yaml
     Assert.equal(555, config.get("var1"));  # not found in en-uk, then search from en.yaml
 
-###If Conflict happen, then order by calling sequence, for example "country=zh;environment=alpha"  country got hight priority.
-If "environment=alpha;country=zh", then environment is higher priority.
+###If Conflict happen, then order by calling sequence, for example "country=zh;environment=alpha"  country got hight priority. If "environment=alpha;country=zh", then environment is higher priority.
     DConfig config = new DConfig("/usr/local/etc/example/", "country=en;environment=beta");
     Assert.equal(555, config.get("var1")); # from en.yaml
     DConfig config = new DConfig("/usr/local/etc/example/", "environment=beta;country=en");
