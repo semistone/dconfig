@@ -128,6 +128,7 @@ public class Node {
 		if (!this.branchGroupByLevelOneBranch.containsKey(branch.getLevelOneBranch())) {
 			return null;
 		}
+		
 		List<Branch> branches = branchGroupByLevelOneBranch.get(branch.getLevelOneBranch());
 		//
 		// map key is match level, value is branch

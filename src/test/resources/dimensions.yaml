@@ -8,9 +8,9 @@ dimensions:
     device:
     lang:
         en:
-            en_US:
-            en_GB:
-            en_CA:
+            en_US: 
+            en_GB: 
+            en_CA: 
         fr:
             fr_FR:
                 fr_CA:

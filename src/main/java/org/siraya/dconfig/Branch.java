@@ -30,6 +30,20 @@ public class Branch{
 		this.parentBranch = this;
 	}
 	
+	/**
+	 * add child branch
+	 * @param child
+	 */
+	public void addChildBranch(Branch child) {
+		child.setBranchLevel(this.branchLevel +1 );
+		child.setParentBranch(this);
+		if (this.levelOneBranch == null) { // means current node is master.
+			child.setLevelOneBranch(child); 
+		} else {
+			child.setLevelOneBranch(levelOneBranch);			
+		}
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -78,9 +92,9 @@ public class Branch{
 	
 	/**
 	 * if match the compare criteria
-	 * return if not in the same root branch -1
+	 * return if not in the same root branch -3
 	 *        if in the same root branch but highter return -2
-	 *        if just not match return -3
+	 *        if just not match return -1
 	 *        if match return match level
 	 */
 	public int matchLevel(Branch obj){
