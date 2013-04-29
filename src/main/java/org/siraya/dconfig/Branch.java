@@ -15,7 +15,9 @@ public class Branch{
 	private String id;
 	private Branch parentBranch;
 	private int branchLevel;
-	
+	private Node root;
+
+
 	static{
 		MASTER = new Branch();		
 	}
@@ -77,8 +79,13 @@ public class Branch{
 	 */
 	public boolean equals(Object object){
 		if (object instanceof Branch) {
+			
 			Branch tmp = (Branch)object;
-			if (this.id.equals(tmp.getId())
+			if (this.levelOneBranch == null && 
+					this.levelOneBranch == tmp.getLevelOneBranch() &&
+					this.id.equals(tmp.getId())) {
+				return true;
+			} else if (this.id.equals(tmp.getId())
 					&& this.levelOneBranch.equals(tmp.getLevelOneBranch())) {
 				return true;
 			}else{
@@ -134,4 +141,11 @@ public class Branch{
 		return this.getLevelOneBranch().equals(obj.getLevelOneBranch());
 	}
 	
+	public Node getRoot() {
+		return root;
+	}
+
+	public void setRoot(Node root) {
+		this.root = root;
+	}	
 }

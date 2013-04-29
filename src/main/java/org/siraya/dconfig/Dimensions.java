@@ -3,9 +3,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.util.Set;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 /**
  * load from dimensions.yaml and initialize branch settings.
@@ -41,8 +39,6 @@ public class Dimensions {
 		if (obj instanceof Map) {
 			Set<String> keys = ((Map<String,Object>)obj).keySet();
 			for (String key: keys) {
-
-				logger.info("new branch for " + key);
 				Branch current = new Branch();
 				current.setId(key);
 				parent.addChildBranch(current);
