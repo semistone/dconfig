@@ -26,7 +26,7 @@ public class Node {
 	private Map<Branch, List<Branch>> branchGroupByLevelOneBranch = new HashMap<Branch, List<Branch> >();
 
 	private int nodeLevel;
-	private Map<String, Node> children;
+	
 	static Logger logger = Logger.getLogger(Node.class.getName());
 	public Node() {
 		logger.info("create root node");
@@ -65,7 +65,10 @@ public class Node {
 	}
 
 	public Object getValue() {
-		return this.branchValues.get("master");
+		if (this.isTreeNode) {
+			throw new NodeException("can't set value into tree node");
+		}
+		return this.branchValues.get(Branch.MASTER);
 	}
 
 	/**
@@ -157,6 +160,28 @@ public class Node {
 	}
 	
 	/**
+	 * get child map from branch value
+	 * @param branch
+	 * @return
+	 */
+	private Map<String, Node> getChildMap(Branch branch){
+		if (!this.isTreeNode && branchValues != null) {
+			throw new NodeException("this isn't tree node in path:" + this.path);
+		}
+		this.isTreeNode = true;
+		if (branchValues == null) {
+			branchValues = new 	HashMap<Branch, Object>();
+		}
+		Map<String, Node> children = null;
+		children = (Map<String, Node>)this.branchValues.get(branch);
+		if (children == null) {
+			children =  new HashMap<String, Node>();
+			this.branchValues.put(branch, children);
+		}
+		return children;
+	}
+	
+	/**
 	 * add child node and return subnode.
 	 * if node not exist, then create new node. If exists, then return old node.
 	 * @param branch
@@ -166,24 +191,18 @@ public class Node {
 	 * @throws Exception
 	 */
 	public Node addChildNode(Branch branch, String name, Object child) {
-		if (!this.isTreeNode && branchValues != null) {
-			throw new NodeException("this is leaf node for add name:"+name +" branch:"+branch.getId() + " in path:"+this.path);
-		}
-		this.isTreeNode = true;
+
 		Node node = null;
-		
+		Map<String, Node> children = getChildMap(branch);
 		if (children == null) {
 			children =  new HashMap<String, Node>();
 		}
 		
-		if (this.children.containsKey(name)) {
-			node = this.children.get(name);
+		if (children.containsKey(name)) {
+			node = children.get(name);
 		} else {
-			if (!Branch.MASTER.equals(branch)) {
-				throw new NodeException("only master branch can add new node");
-			}
 			node = new Node(this,name);
-			this.children.put(name, node);
+			children.put(name, node);
 		}
 		if (child != null) {
 			node.setValue(branch, child);			
@@ -192,16 +211,25 @@ public class Node {
 	}
 
 	/**
-	 * get child node.
+	 * get child node by master branch.
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public Node getChildNode(String name) {
+	public Node getChildNode(Branch branch, String name) {
 		if (!this.isTreeNode) {
 			throw new NodeException("this is leaf node");
 		}
-		return this.children.get(name);
+		return getChildMap(branch).get(name);
+	}
+	
+	/**
+	 * get master branch's child node.
+	 * @param name
+	 * @return
+	 */
+	public Node getChildNode(String name) {
+		return this.getChildNode(Branch.MASTER, name);
 	}
 
 	/**
@@ -214,7 +242,7 @@ public class Node {
 			return true;
 		}
 		
-		for (Node child: this.children.values()) {
+		for (Node child: this.getChildMap(Branch.MASTER).values()) {
 			if (!child.isTreeNode || (child.getValue() instanceof List)) {
 				return false;
 			}
@@ -222,8 +250,20 @@ public class Node {
 		return true;
 	}
 	
+	/**
+	 * get child's key set.
+	 * @return
+	 */
+	public Set<String> keySet(Branch branch){
+		return this.getChildMap(branch).keySet();
+	}
+	
+	/**
+	 * get child's key set.
+	 * @return
+	 */
 	public Set<String> keySet(){
-		return this.children.keySet();
+		return this.keySet(Branch.MASTER);
 	}
 	
 	public String getPath() {
@@ -233,5 +273,7 @@ public class Node {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+	
 
 }
