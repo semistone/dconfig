@@ -48,6 +48,7 @@ public class RootNode extends Node {
 					throw new NodeException("branch " + branch + " not exist");
 				}
 			}
+			
 			//
 			// init master node.
 			//

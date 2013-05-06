@@ -123,7 +123,7 @@ public class Node {
 	 * @return null, if no match branch exist.
 	 */
 	public Object getValue(Branch branch) {
-		if (!this.isTreeNode()) {
+		if (this.isTreeNode()) {
 			throw new NodeException("only leaf node can get value by branch");
 		}
 		//
@@ -262,9 +262,10 @@ public class Node {
 	 * get child's key set.
 	 * @return
 	 */
-	public Set<String> keySet(){
+	public Set<String> keySet(){		
 		return this.keySet(Branch.MASTER);
 	}
+
 	
 	public String getPath() {
 		return path;
@@ -274,6 +275,8 @@ public class Node {
 		this.path = path;
 	}
 
-	
 
+	public int size(Branch branch) {
+		return this.getChildMap(branch).size();
+	}
 }

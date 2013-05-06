@@ -86,7 +86,7 @@ public class Branch{
 					this.id.equals(tmp.getId())) {
 				return true;
 			} else if (this.id.equals(tmp.getId())
-					&& this.levelOneBranch.equals(tmp.getLevelOneBranch())) {
+					&& this.levelOneBranch.getId().equals(tmp.getLevelOneBranch().getId())) {
 				return true;
 			}else{
 				return false;
@@ -108,7 +108,7 @@ public class Branch{
 		//
 		// not in the same root branch
 		//
-		if (isSameLevelOneBranch(obj)) {
+		if (!isSameLevelOneBranch(obj)) {
 			return -3;
 		}
 		

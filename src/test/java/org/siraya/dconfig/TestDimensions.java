@@ -2,10 +2,14 @@ package org.siraya.dconfig;
 import junit.framework.*;
 import java.io.InputStream;
 import java.util.logging.*;
+
+import org.junit.Before;
 import org.siraya.dconfig.Dimensions;
 import java.util.Map;
 public class TestDimensions extends TestCase{
 	private Dimensions dimensions;
+
+	@Before
 	public void setUp(){
 		//
 		// init logger for finest.
@@ -23,5 +27,6 @@ public class TestDimensions extends TestCase{
 	
 	public void testGet(){
 		Assert.assertEquals(4, dimensions.getBranchMap("environment").size());
+		Assert.assertEquals(2, dimensions.getBranchMap("environment").get("development").getBranchLevel());
 	}
 }
