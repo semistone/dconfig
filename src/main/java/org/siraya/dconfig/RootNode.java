@@ -54,6 +54,7 @@ public class RootNode extends Node {
 			//
 			Node rootNode = currentBranch.getRoot();
 			if (rootNode == null) {
+				logger.info("add root node for branch "+currentBranch.getId());
 				rootNode = new Node();
 				currentBranch.setRoot(rootNode);
 			}
@@ -67,7 +68,7 @@ public class RootNode extends Node {
 
 	private void initNodeTree(String key, Object obj, Node parent,
 			Branch currentBranch) {
-		Node currentNode = parent.addChildNode(Branch.MASTER, key, null);
+		Node currentNode = parent.addChildNode(currentBranch, key, null);
 		if (obj instanceof Map) {
 			Map<String, Object> map = (Map<String, Object>) obj;
 			Set<String> keys = ((Map<String, Object>) obj).keySet();

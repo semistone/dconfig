@@ -37,8 +37,10 @@ public class Branch{
 	 * @param child
 	 */
 	public void addChildBranch(Branch child) {
-		child.setBranchLevel(this.branchLevel +1 );
+		child.setBranchLevel(this.branchLevel + 1 );
+
 		child.setParentBranch(this);
+		
 		if (this.levelOneBranch == null) { // means current node is master.
 			child.setLevelOneBranch(child); 
 		} else {
@@ -49,12 +51,15 @@ public class Branch{
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public Branch getParentBranch() {
 		return parentBranch;
 	}
+	
 	public void setParentBranch(Branch parentBranch) {
 		this.parentBranch = parentBranch;
 	}
@@ -123,8 +128,8 @@ public class Branch{
 		// back to the same level.
 		//
 		Branch compareBranch = this;
-		for(int i = this.branchLevel - obj.getBranchLevel() ; i > 0 ; i--) {
-			compareBranch = this.getParentBranch();
+		for(int i = this.branchLevel - obj.getBranchLevel() ; i > 0 ; i--) {			
+			compareBranch = compareBranch.getParentBranch();
 		}
 
 		if (obj.equals(compareBranch)) {

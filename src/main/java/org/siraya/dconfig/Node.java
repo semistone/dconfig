@@ -279,4 +279,17 @@ public class Node {
 	public int size(Branch branch) {
 		return this.getChildMap(branch).size();
 	}
+	
+	public void dump(StringBuffer sb) {
+		String prefix = "";
+		for (int i = 0 ; i < this.nodeLevel; i++) {
+			prefix += "    ";			
+		}
+		for (Branch key : this.branchValues.keySet()){
+			sb.append(prefix);
+			sb.append("[" + key.getId()+ "]:");
+			sb.append(branchValues.get(key));
+			sb.append("\n");
+		}
+	}
 }

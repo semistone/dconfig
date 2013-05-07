@@ -36,5 +36,13 @@ public class TestBranch {
 		Assert.assertEquals(-3, match);
 		match = fr.matchLevel(dimensions.getBranchMap("lang").get("en"));
 		Assert.assertEquals(-1, match);
+		
+		Branch fr_CA = dimensions.getBranchMap("lang").get("fr_CA");
+		Assert.assertEquals(-2, fr.matchLevel(fr_CA));
+		
+		Assert.assertEquals(2, fr_CA.matchLevel(fr));
+		
 	}
+	
+	
 }

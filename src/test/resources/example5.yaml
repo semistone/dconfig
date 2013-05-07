@@ -1,0 +1,5 @@
+-   settings: lang=fr_FR
+    data-url: http://service_fr.yahoo.com
+    links: 
+        home: http://www_fr.yahoo.com
+        mail: http://mail_fr.yahoo.com

@@ -30,6 +30,10 @@ public class TestNode {
 		InputStream in1 = getClass().getClassLoader().getResourceAsStream(
 				"example2.yaml");
 		RootNode root2 = new RootNode(in1, dimensions);
+		
+		InputStream in3 = getClass().getClassLoader().getResourceAsStream(
+				"example5.yaml");
+		RootNode root3 = new RootNode(in3, dimensions);
 	}
 	
 	@Test
@@ -40,8 +44,23 @@ public class TestNode {
 	
 	@Test
 	public void testGetValueOverwriteByBranch(){
-		Object obj = Branch.MASTER.getRoot().getChildNode("data-url").getValue(dimensions.getBranchMap("environment").get("development"));
-
+		Branch developement = dimensions.getBranchMap("environment").get("development");
+		Object obj = developement.getRoot().getChildNode(developement, "data-url").getValue(developement);
+		/*
+		Node node =  developement.getRoot().getChildNode(developement, "data-url");
+		StringBuffer sb = new StringBuffer();
+		node.dump(sb);
+		System.out.println(sb.toString());
+		*/
 		Assert.assertEquals("http://service_dev.yahoo.com", obj);
 	}
+	
+	/*
+	@Test
+	public void testGetValueLower() {
+		Object obj = Branch.MASTER.getRoot().getChildNode("data-url").getValue(dimensions.getBranchMap("lang").get("fr_CA"));
+
+		Assert.assertEquals("http://service_fr.yahoo.com", obj);
+	}
+	*/
 }
