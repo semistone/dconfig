@@ -64,9 +64,7 @@ public class TestNode {
 	public void testGetValueInBranch() {
 		Branch developement = dimensions.getBranchMap("environment").get("development");
 		Node node  = Branch.MASTER.getRoot().getChildNode("data-url");
-		StringBuffer sb = new StringBuffer();
-		node.dump(sb);
-		//System.out.println(sb.toString());
+
 		Assert.assertEquals(3, node.branchSize());
 		Assert.assertEquals("http://service_dev.yahoo.com", node.getValue(developement));
 		
@@ -84,6 +82,19 @@ public class TestNode {
 		InputStream in4 = getClass().getClassLoader().getResourceAsStream(
 				"example5.yaml");
 		RootNode root3 = new RootNode(in4, dimensions);
+	}
+	
+	@Test
+	public void testDump(){
+		Branch developement = dimensions.getBranchMap("environment").get("development");
+		Node node  = Branch.MASTER.getRoot().getChildNode("data-url");
+		StringBuffer sb = new StringBuffer();
+		node.dump(sb);
+		//System.out.println(sb.toString());
+		
+		StringBuffer sb2 = new StringBuffer();		
+		Branch.MASTER.getRoot().dump(sb2);
+		System.out.println(sb2.toString());
 	}
 	
 }

@@ -308,11 +308,27 @@ public class Node {
 		for (int i = 0 ; i < this.nodeLevel; i++) {
 			prefix += "    ";			
 		}
-		for (Branch key : this.branchValues.keySet()){
-			sb.append(prefix);
-			sb.append("[" + key.getId()+ "]:");
-			sb.append(branchValues.get(key));
-			sb.append("\n");
+		if (this.isTreeNode) {
+			for (Branch key : this.branchValues.keySet()){
+				sb.append(prefix);
+				sb.append("[" + key.getId()+ " tree node]\n");
+				Map<String, Node> map = (Map)branchValues.get(key);
+				for (String nodeKey : map.keySet()) {
+					sb.append(prefix);
+					sb.append(nodeKey);
+					sb.append(":\n");
+					map.get(nodeKey).dump(sb);
+					sb.append("\n");
+				}
+				sb.append("\n");
+			}			
+		}else{
+			for (Branch key : this.branchValues.keySet()){
+				sb.append(prefix);
+				sb.append("[" + key.getId()+ " leaf node]:");
+				sb.append(branchValues.get(key));
+				sb.append("\n");
+			}
 		}
 	}
 	

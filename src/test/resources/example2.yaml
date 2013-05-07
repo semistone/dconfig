@@ -1,5 +1,4 @@
 -   settings: environment=development
     data-url: http://service_dev.yahoo.com
     links: 
-        home: http://www_dev.yahoo.com
         mail: http://mail_dev.yahoo.com
