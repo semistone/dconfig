@@ -88,6 +88,11 @@ public class Node {
 		if (branchValues == null) {
 			branchValues = new 	HashMap<Branch, Object>();
 		}
+		
+		if (branchValues.containsKey(branch)) {
+			throw new NodeException("set duplication value in branch:"+branch.getId() + " path:"+ this.path);
+		}
+		
 		this.branchValues.put(branch, value);
 		logger.info("set value in:"+this.path+ " value is:"+ value);
 		if (branch.getBranchLevel() == 0 ) {

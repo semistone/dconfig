@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import junit.framework.Assert;
 
 import org.junit.*;
-import org.junit.Test;
 
 public class TestNode {
 	Dimensions dimensions;
@@ -67,7 +66,7 @@ public class TestNode {
 		Node node  = Branch.MASTER.getRoot().getChildNode("data-url");
 		StringBuffer sb = new StringBuffer();
 		node.dump(sb);
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
 		Assert.assertEquals(3, node.branchSize());
 		Assert.assertEquals("http://service_dev.yahoo.com", node.getValue(developement));
 		
@@ -80,9 +79,11 @@ public class TestNode {
 		Assert.assertEquals("http://service.yahoo.com", node.getValue(us));		
 	}
 	
-	
+	@Test(expected = NodeException.class)
 	public void testDuplicateLoad(){
-		
+		InputStream in4 = getClass().getClassLoader().getResourceAsStream(
+				"example5.yaml");
+		RootNode root3 = new RootNode(in4, dimensions);
 	}
 	
 }
