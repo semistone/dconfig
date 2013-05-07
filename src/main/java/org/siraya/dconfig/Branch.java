@@ -19,7 +19,8 @@ public class Branch{
 
 
 	static{
-		MASTER = new Branch();		
+		MASTER = new Branch();	
+		MASTER.setRoot(new Node());
 	}
 	
 	/**
@@ -139,6 +140,41 @@ public class Branch{
 			// not match branch.
 			//
 			return -1;
+		}
+	}
+	
+	/**
+	 * compare is two branch are in direct ancestry relation
+	 * @param branch
+	 * @return
+	 */
+	public boolean isSameFamily(Branch branch) {
+		//
+		// master is the same family with everyone.
+		//
+		if (branch.getBranchLevel() == 0 || this.getBranchLevel() == 0) {
+			return true;
+		}
+		
+		if (!isSameLevelOneBranch(branch)) {
+			return false;
+		}
+		
+		int diff = branch.getBranchLevel() - this.getBranchLevel();
+		if (diff > 0) {
+			Branch compareBranch = branch;
+			for(int i = diff ; i > 0 ; i--) {	
+				compareBranch = compareBranch.getParentBranch();
+			}
+			return this.equals(compareBranch);
+		} else if (diff < 0) {
+			Branch compareBranch = this;
+			for(int i = -diff ; i > 0 ; i--) {			
+				compareBranch = compareBranch.getParentBranch();
+			}
+			return branch.equals(compareBranch);	
+		} else {
+			return this.equals(branch);
 		}
 	}
 	

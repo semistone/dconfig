@@ -55,7 +55,7 @@ public class RootNode extends Node {
 			Node rootNode = currentBranch.getRoot();
 			if (rootNode == null) {
 				logger.info("add root node for branch "+currentBranch.getId());
-				rootNode = new Node();
+				rootNode = Branch.MASTER.getRoot(); // use common master root.
 				currentBranch.setRoot(rootNode);
 			}
 			setting.remove("settings");

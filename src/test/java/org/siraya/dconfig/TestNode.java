@@ -5,7 +5,7 @@ import java.util.logging.Level;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
+import org.junit.*;
 import org.junit.Test;
 
 public class TestNode {
@@ -36,8 +36,13 @@ public class TestNode {
 		RootNode root3 = new RootNode(in3, dimensions);
 	}
 	
+	@After
+	public void tearDown(){
+		Branch.MASTER.setRoot(new Node());
+	}
+	
 	@Test
-	public void testGetValue(){
+	public void testGetValueInMaster(){
 		Object obj = Branch.MASTER.getRoot().getChildNode("data-url").getValue();		
 		Assert.assertEquals("http://service.yahoo.com", obj);
 	}
@@ -55,12 +60,29 @@ public class TestNode {
 		Assert.assertEquals("http://service_dev.yahoo.com", obj);
 	}
 	
-	/*
+	
 	@Test
-	public void testGetValueLower() {
-		Object obj = Branch.MASTER.getRoot().getChildNode("data-url").getValue(dimensions.getBranchMap("lang").get("fr_CA"));
-
-		Assert.assertEquals("http://service_fr.yahoo.com", obj);
+	public void testGetValueInBranch() {
+		Branch developement = dimensions.getBranchMap("environment").get("development");
+		Node node  = Branch.MASTER.getRoot().getChildNode("data-url");
+		StringBuffer sb = new StringBuffer();
+		node.dump(sb);
+		System.out.println(sb.toString());
+		Assert.assertEquals(3, node.branchSize());
+		Assert.assertEquals("http://service_dev.yahoo.com", node.getValue(developement));
+		
+		Branch fr = dimensions.getBranchMap("lang").get("fr");
+		Assert.assertEquals("http://service.yahoo.com", node.getValue(fr));
+		Branch fr_Test = dimensions.getBranchMap("lang").get("fr_Test");
+		Assert.assertEquals("http://service_fr.yahoo.com", node.getValue(fr_Test));		
+		
+		Branch us = dimensions.getBranchMap("region").get("us");
+		Assert.assertEquals("http://service.yahoo.com", node.getValue(us));		
 	}
-	*/
+	
+	
+	public void testDuplicateLoad(){
+		
+	}
+	
 }

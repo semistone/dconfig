@@ -44,5 +44,15 @@ public class TestBranch {
 		
 	}
 	
-	
+	@Test
+	public void testSamleFamily(){
+		Branch developement = dimensions.getBranchMap("environment").get("development");
+		Branch fr = dimensions.getBranchMap("lang").get("fr");
+		Assert.assertFalse(developement.isSameFamily(fr));
+		Assert.assertTrue(Branch.MASTER.isSameFamily(fr));
+		Assert.assertTrue(Branch.MASTER.isSameFamily(developement));
+		
+		Branch fr_CA = dimensions.getBranchMap("lang").get("fr_CA");
+		Assert.assertTrue(fr_CA.isSameFamily(fr));
+	}
 }

@@ -137,7 +137,7 @@ public class Node {
 		// no the same level one branch exist.
 		//
 		if (!this.branchGroupByLevelOneBranch.containsKey(branch.getLevelOneBranch())) {
-			return null;
+			return this.branchValues.get(Branch.MASTER);
 		}
 		
 		List<Branch> branches = branchGroupByLevelOneBranch.get(branch.getLevelOneBranch());
@@ -147,7 +147,17 @@ public class Node {
 		//
 		HashMap<Integer,Branch> map = new HashMap<Integer,Branch>();
 		for (Branch localBranch : branches) {
-			map.put(branch.matchLevel(localBranch), localBranch);
+			logger.fine("level " + branch.matchLevel(localBranch) + " local branch id " + localBranch.getId() + " compare to "+branch.getId());
+			int matchLevel = branch.matchLevel(localBranch);
+			if (matchLevel > 0) {
+				map.put(matchLevel, localBranch);				
+			}
+		}
+		//
+		// no match 
+		//
+		if (map.size() == 0) {
+			return this.branchValues.get(Branch.MASTER);
 		}
 		Object[] key = map.keySet().toArray();
 		java.util.Arrays.sort(key);
@@ -173,7 +183,15 @@ public class Node {
 			branchValues = new 	HashMap<Branch, Object>();
 		}
 		Map<String, Node> children = null;
-		children = (Map<String, Node>)this.branchValues.get(branch);
+		//
+		// if in the same family, then use it.
+		//
+		for (Branch currentBranch : this.branchValues.keySet()) {
+			if (currentBranch.isSameFamily(branch)) {
+				children = (Map<String, Node>)this.branchValues.get(currentBranch);
+				break;
+			}
+		}
 		if (children == null) {
 			children =  new HashMap<String, Node>();
 			this.branchValues.put(branch, children);
@@ -291,5 +309,10 @@ public class Node {
 			sb.append(branchValues.get(key));
 			sb.append("\n");
 		}
+	}
+	
+	
+	public int branchSize() {
+		return this.branchValues.size();
 	}
 }
