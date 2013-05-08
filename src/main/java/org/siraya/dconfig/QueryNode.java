@@ -16,12 +16,21 @@ public class QueryNode implements Map<String, Object>{
 	}
 
 	private QueryNode getChildNode(String name) {
-		return new QueryNode(node.getChildNode(name), branches);
+		return new QueryNode(this._getChildNode(name), branches);
 	}
 
+	private Node _getChildNode(String name){
+		for (Branch branch : this.branches) {
+			Node childNode = node.getChildNode(branch, name);
+			if (childNode != null) {
+				return childNode;
+			}
+		}
+		throw new NodeException("can't find child node");		
+	}
 
 	public Object get(String name) {
-		Node childNode = node.getChildNode(name);
+		Node childNode = _getChildNode(name);
 		if (childNode.isTreeNode()) {
 			return this.getChildNode(name);
 		} else {
@@ -35,7 +44,7 @@ public class QueryNode implements Map<String, Object>{
 	 * @return
 	 */
 	private Object getChildValue(String name) {
-		Node childNode = this.node.getChildNode(name);
+		Node childNode = _getChildNode(name);
 		if (childNode.isTreeNode()) {
 			throw new NodeException("tree node can't get value");
 		}

@@ -287,6 +287,23 @@ public class Node {
 	}
 		
 	/**
+	 * get child node in all branch.
+	 * @param name
+	 * @return
+	 */
+	public Node getChildNode(String name) {
+		if (!this.isTreeNode) {
+			throw new NodeException("this is leaf node");
+		}
+		for (Branch currentBranch : this.branchValues.keySet()) {
+			Map<String, Node> map = (Map<String, Node>)this.branchValues.get(currentBranch);
+			if (map.containsKey(name)) {
+				return map.get(name);
+			}
+		}
+		throw new NodeException("child node not exist");
+	}
+	/**
 	 * get child's key set.
 	 * @return
 	 */
