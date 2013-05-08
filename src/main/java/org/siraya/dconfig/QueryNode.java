@@ -73,7 +73,7 @@ public class QueryNode implements Map<String, Object>{
 			throw new NodeException("tree node can't get value");
 		}
 		Object value = null;
-		for (Branch branch : branches) {
+		for (Branch branch : this.branches) {
 			value = node.getValue(branch);
 			if (value != null) {
 				return value;

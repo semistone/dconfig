@@ -15,12 +15,12 @@ public class Branch{
 	private String id;
 	private Branch parentBranch;
 	private int branchLevel;
-	private Node root;
+
 
 
 	static{
 		MASTER = new Branch();	
-		MASTER.setRoot(new Node());
+
 	}
 	
 	/**
@@ -182,11 +182,4 @@ public class Branch{
 		return this.getLevelOneBranch().equals(obj.getLevelOneBranch());
 	}
 	
-	public Node getRoot() {
-		return root;
-	}
-
-	public void setRoot(Node root) {
-		this.root = root;
-	}	
 }

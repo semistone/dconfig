@@ -311,7 +311,7 @@ public class Node {
 		if (this.isTreeNode) {
 			for (Branch key : this.branchValues.keySet()){
 				sb.append(prefix);
-				sb.append("[" + key.getId()+ " tree node]\n");
+				sb.append("[BRANCH " + key.getId()+ " tree node]\n");
 				Map<String, Node> map = (Map)branchValues.get(key);
 				for (String nodeKey : map.keySet()) {
 					sb.append(prefix);
@@ -325,7 +325,7 @@ public class Node {
 		}else{
 			for (Branch key : this.branchValues.keySet()){
 				sb.append(prefix);
-				sb.append("[" + key.getId()+ " leaf node]:");
+				sb.append("[BRANCH " + key.getId()+ " leaf node]:");
 				sb.append(branchValues.get(key));
 				sb.append("\n");
 			}

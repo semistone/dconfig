@@ -1,5 +1,5 @@
 -   settings: master
-    title_key: YRB_YAHOO,
+    title_key: YRB_YAHOO
     data-url: http://service.yahoo.com
     logo: yahoo.png
     links: 

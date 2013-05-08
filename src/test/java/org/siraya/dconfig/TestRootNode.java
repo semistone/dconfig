@@ -17,7 +17,7 @@ public class TestRootNode {
 		// ConsoleHandler ch = new ConsoleHandler();
 		// ch.setLevel(Level.FINEST);
 		// RootNode.logger.addHandler(ch);
-		RootNode.logger.setLevel(Level.ALL);
+		//RootNode.logger.setLevel(Level.ALL);
 
 		InputStream in2 = getClass().getClassLoader().getResourceAsStream(
 				"dimensions.yaml");

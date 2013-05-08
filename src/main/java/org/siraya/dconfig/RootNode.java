@@ -14,8 +14,9 @@ import org.yaml.snakeyaml.Yaml;
  * 
  */
 public class RootNode extends Node {
-	static Logger logger = Logger.getLogger(RootNode.class.getName());
+	private static Logger logger = Logger.getLogger(RootNode.class.getName());
 
+	
 	/**
 	 * construct of root node.
 	 * 
@@ -23,6 +24,10 @@ public class RootNode extends Node {
 	 * @param dimensions
 	 */
 	public RootNode(InputStream input, Dimensions dimensions) {
+		this.load(input, dimensions);
+	}
+	
+	public void load(InputStream input, Dimensions dimensions) {
 		Yaml yaml = new Yaml();
 		logger.info("parsing yaml file and get root node");
 		Object root = yaml.load(input);
@@ -52,12 +57,7 @@ public class RootNode extends Node {
 			//
 			// init master node.
 			//
-			Node rootNode = currentBranch.getRoot();
-			if (rootNode == null) {
-				logger.info("add root node for branch "+currentBranch.getId());
-				rootNode = Branch.MASTER.getRoot(); // use common master root.
-				currentBranch.setRoot(rootNode);
-			}
+			Node rootNode = this;
 			setting.remove("settings");
 			Set<String> keys = ((Map<String, Object>) setting).keySet();
 			for (String ikey : keys) {
