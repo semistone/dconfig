@@ -8,27 +8,24 @@ import java.util.Set;
 public class QueryNode implements Map<String, Object>{
 	Node node;
 	List<Branch> branches;
-	boolean isTreeNode;
+
 
 	public QueryNode(Node node, List<Branch> branches) {
 		this.node = node;
 		this.branches = branches;
-		this.isTreeNode = !node.isEndPoint();
 	}
 
 	private QueryNode getChildNode(String name) {
 		return new QueryNode(node.getChildNode(name), branches);
 	}
 
-	public boolean isTreeNode() {
-		return isTreeNode;
-	}
 
 	public Object get(String name) {
-		if (!node.getChildNode(name).isEndPoint()) {
+		Node childNode = node.getChildNode(name);
+		if (childNode.isTreeNode()) {
 			return this.getChildNode(name);
 		} else {
-			return this.getValue();
+			return this.getChildValue(name);
 		}
 	}
 
@@ -37,57 +34,30 @@ public class QueryNode implements Map<String, Object>{
 	 * 
 	 * @return
 	 */
-	public Object getValue() {
-
-		if (this.isTreeNode) {
+	private Object getChildValue(String name) {
+		Node childNode = this.node.getChildNode(name);
+		if (childNode.isTreeNode()) {
 			throw new NodeException("tree node can't get value");
 		}
 
-		if (!node.isTreeNode()) {
-			//
-			// map be list or normal value
-			//
-			return this.getNodeValueByNode(node);
-		} else {
-			//
-			// put into hashMap
-			//
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			for (String key : node.keySet()) {
-				Node childNode = node.getChildNode(key);
-				Object value = getNodeValueByNode(childNode);
-				map.put(key, value);
-			}
-			return map;
-		}
-	}
-
-	/**
-	 * get node value by branch.
-	 * 
-	 * @param node
-	 * @return
-	 */
-	private Object getNodeValueByNode(Node node) {
-		if (node.isTreeNode()) {
-			throw new NodeException("tree node can't get value");
-		}
 		Object value = null;
 		for (Branch branch : this.branches) {
-			value = node.getValue(branch);
+			value = childNode._getValue(branch);
 			if (value != null) {
 				return value;
 			}
 		}
+		
 		if (value == null) { // get default master value.
-			return node.getValue();
+			return childNode.getMasterValue();
 		} else {
 			throw new NodeException("impossible here.");
 		}
+		
 	}
 
+
 	public int size() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

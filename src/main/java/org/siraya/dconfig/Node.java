@@ -64,7 +64,7 @@ public class Node {
 		this.isTreeNode = hasSubNode;
 	}
 
-	public Object getValue() {
+	public Object getMasterValue() {
 		if (this.isTreeNode) {
 			throw new NodeException("can't set value into tree node");
 		}
@@ -121,13 +121,27 @@ public class Node {
 	public void setValue(Object value) {
 		this.setValue(Branch.MASTER, value);
 	}
+	
+	/**
+	 * get value, if not match, return master branch.
+	 * @param branch
+	 * @return
+	 */
+	public Object getValue(Branch branch) {
+		Object ret = this._getValue(branch) ;
+		if ( ret == null) {
+			return this.branchValues.get(Branch.MASTER);
+		} else {
+			return ret;
+		}
+	}
 
 	/**
 	 * 
 	 * @param branch
 	 * @return null, if no match branch exist.
 	 */
-	public Object getValue(Branch branch) {
+	Object _getValue(Branch branch) {
 		if (this.isTreeNode()) {
 			throw new NodeException("only leaf node can get value by branch");
 		}
@@ -142,7 +156,7 @@ public class Node {
 		// no the same level one branch exist.
 		//
 		if (!this.branchGroupByLevelOneBranch.containsKey(branch.getLevelOneBranch())) {
-			return this.branchValues.get(Branch.MASTER);
+			return null;
 		}
 		
 		List<Branch> branches = branchGroupByLevelOneBranch.get(branch.getLevelOneBranch());
@@ -162,7 +176,7 @@ public class Node {
 		// no match 
 		//
 		if (map.size() == 0) {
-			return this.branchValues.get(Branch.MASTER);
+			return null;
 		}
 		Object[] key = map.keySet().toArray();
 		java.util.Arrays.sort(key);
@@ -204,6 +218,34 @@ public class Node {
 		return children;
 	}
 	
+	private Map<String, Node> getChildMapForGetting(Branch branch) {
+		if (!this.isTreeNode && branchValues != null) {
+			throw new NodeException("this isn't tree node in path:" + this.path);
+		}
+		if (branchValues == null) {
+			throw new NodeException("branch value is null");
+		}
+		Map<String, Node> ret = null;
+		if (branchValues.containsKey(Branch.MASTER)) {
+			ret = (Map<String, Node>)branchValues.get(Branch.MASTER);
+		}
+		Map<String, Node> subMap = null;
+		for (Branch currentBranch : this.branchValues.keySet()) {
+			if (currentBranch.isSameFamily(branch)) {
+				subMap = (Map<String, Node>)this.branchValues.get(currentBranch);
+				break;
+			}
+		}
+		
+		// merge ret and sub map
+		if (subMap != null) {
+			for (String key : subMap.keySet()) {
+				ret.put(key, subMap.get(key));
+			}			
+		}
+		
+		return ret;
+	}
 	/**
 	 * add child node and return subnode.
 	 * if node not exist, then create new node. If exists, then return old node.
@@ -217,9 +259,7 @@ public class Node {
 
 		Node node = null;
 		Map<String, Node> children = getChildMap(branch);
-		if (children == null) {
-			children =  new HashMap<String, Node>();
-		}
+
 		
 		if (children.containsKey(name)) {
 			node = children.get(name);
@@ -243,42 +283,15 @@ public class Node {
 		if (!this.isTreeNode) {
 			throw new NodeException("this is leaf node");
 		}
-		return getChildMap(branch).get(name);
+		return getChildMapForGetting(branch).get(name);
 	}
-	
-	/**
-	 * get master branch's child node.
-	 * @param name
-	 * @return
-	 */
-	public Node getChildNode(String name) {
-		return this.getChildNode(Branch.MASTER, name);
-	}
-
-	/**
-	 * If child has tree node, then it's not end point.
-	 * If one child is list, then it's not end point
-	 * @return
-	 */
-	public boolean isEndPoint() {
-		if (!this.isTreeNode) {
-			return true;
-		}
 		
-		for (Node child: this.getChildMap(Branch.MASTER).values()) {
-			if (!child.isTreeNode || (child.getValue() instanceof List)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	/**
 	 * get child's key set.
 	 * @return
 	 */
 	public Set<String> keySet(Branch branch){
-		return this.getChildMap(branch).keySet();
+		return this.getChildMapForGetting(branch).keySet();
 	}
 	
 	/**
@@ -300,7 +313,7 @@ public class Node {
 
 
 	public int size(Branch branch) {
-		return this.getChildMap(branch).size();
+		return this.getChildMapForGetting(branch).size();
 	}
 	
 	public void dump(StringBuffer sb) {

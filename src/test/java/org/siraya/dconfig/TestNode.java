@@ -42,7 +42,7 @@ public class TestNode {
 	
 	@Test
 	public void testGetValueInMaster(){
-		Object obj = root.getChildNode("data-url").getValue();		
+		Object obj = root.getChildNode("data-url").getMasterValue();		
 		Assert.assertEquals("http://service.yahoo.com", obj);
 	}
 	
