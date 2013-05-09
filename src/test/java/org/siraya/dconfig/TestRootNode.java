@@ -63,4 +63,13 @@ public class TestRootNode {
 				"example4.yaml");
 		RootNode root = new RootNode(in, dimensions);
 	}
+	
+	
+	@Test
+	public void testFinalize()throws Throwable{
+		InputStream in = getClass().getClassLoader().getResourceAsStream(
+				"example1.yaml");
+		RootNode root = new RootNode(in, dimensions);
+		root.finalize();
+	}
 }

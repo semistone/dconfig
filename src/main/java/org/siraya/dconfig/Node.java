@@ -225,8 +225,7 @@ public class Node {
 
 			if (masterMap.containsKey(name)) {
 				// if master exist, always use it.
-				children = masterMap;
-				return children;		
+				return  masterMap;
 			}
 		} 
 
@@ -238,8 +237,7 @@ public class Node {
 				continue;
 			}
 			if (branch.isSameFamily(currentBranch)) {
-				children = (Map<String, Node>)this.branchValues.get(currentBranch);
-				break;
+				return (Map<String, Node>)this.branchValues.get(currentBranch);
 			}
 		}			
 		if (children == null) {
@@ -405,5 +403,26 @@ public class Node {
 	
 	public int branchSize() {
 		return this.branchValues.size();
+	}
+
+	/**
+	 * gc 
+	 */
+	public void finalize() throws Throwable {
+		if (this.allChildren != null) {
+	
+			for (String key :this.allChildren.keySet()) {
+				this.allChildren.get(key).finalize();
+			}
+			this.allChildren.clear();
+		}
+		this.parentNode = null;
+		if (this.branchValues != null) {
+			this.branchValues.clear();			
+		}
+		if (this.branchGroupByLevelOneBranch != null) {
+			this.branchGroupByLevelOneBranch.clear();			
+		}
+		super.finalize();
 	}
 }

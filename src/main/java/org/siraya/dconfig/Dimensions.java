@@ -71,6 +71,4 @@ public class Dimensions {
 		return this.branchGroupByLevelOneBranch.get(key);
 	}
 	
-	
-	
 }
