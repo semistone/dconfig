@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import junit.framework.Assert;
 
 import org.junit.*;
-
+import java.util.*;
 public class TestNode {
 	Dimensions dimensions;
 	RootNode root;
@@ -97,4 +97,34 @@ public class TestNode {
 		System.out.println(sb2.toString());
 	}
 	
+	@Test	
+	public void testGetChildMap() {
+		Branch developement = dimensions.getBranchMap("environment").get("development");	
+		Map<String,Node> map = root.getChildMap(developement);
+		Assert.assertEquals(4, map.size());
+	}
+	
+	@Test	
+	public void testNewNodeInBranch(){
+		InputStream in3 = getClass().getClassLoader().getResourceAsStream(
+				"example6.yaml");
+		root.load(in3, dimensions);
+		
+		Branch developement = dimensions.getBranchMap("environment").get("development");	
+		Map<String,Node> map = root.getChildMap(developement);
+
+		Assert.assertEquals(4, map.size());
+		
+		
+		Branch production = dimensions.getBranchMap("environment").get("production");
+		map = root.getChildMap(production);
+		Assert.assertEquals(5, map.size());
+		
+		this.dump(root);
+	}
+	private void dump(Node node){
+		StringBuffer sb2 = new StringBuffer();		
+		node.dump(sb2);		
+		System.out.println(sb2.toString());
+	}
 }

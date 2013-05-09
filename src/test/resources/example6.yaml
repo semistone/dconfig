@@ -7,3 +7,16 @@
        test1: 111
        test2: 
           test3: 999
+
+-   settings: lang=fr
+    production_only:
+       test1: 555
+       test2: 
+          test3: 56223
+                                 
+-   settings: lang=fr_CA
+    production_only:
+       test1: 222
+       test2: 
+          test3: 555
+          

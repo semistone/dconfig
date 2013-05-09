@@ -179,7 +179,12 @@ public class Branch{
 	}
 	
 	public boolean isSameLevelOneBranch(Branch obj){
-		return this.getLevelOneBranch().equals(obj.getLevelOneBranch());
+		// master compare to master.
+		if (this.getLevelOneBranch() == null && obj.getLevelOneBranch() == null) {
+			return true;
+		} else {
+			return this.getLevelOneBranch().equals(obj.getLevelOneBranch());			
+		}
 	}
 	
 }
