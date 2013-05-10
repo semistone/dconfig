@@ -1,10 +1,6 @@
 package org.siraya.dconfig;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 public class QueryNode implements Map<String, Object>{
 	Node node;
 	List<Branch> branches;
@@ -29,14 +25,6 @@ public class QueryNode implements Map<String, Object>{
 		throw new NodeException("can't find child node");		
 	}
 
-	public Object get(String name) {
-		Node childNode = _getChildNode(name);
-		if (childNode.isTreeNode()) {
-			return this.getChildNode(name);
-		} else {
-			return this.getChildValue(name);
-		}
-	}
 
 	/**
 	 * get node value
@@ -67,63 +55,85 @@ public class QueryNode implements Map<String, Object>{
 
 
 	public int size() {
-		return 0;
+		try {
+			return this.node.getChildMap(branches).size();			
+		} catch (NodeException e) {
+			return 0;
+		}
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			 return this.node.getChildMap(branches).isEmpty();			
+		} catch (NodeException e) {
+			return true;
+		}
 	}
 
 	public boolean containsKey(Object key) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			 return this.node.getChildMap(branches).containsKey(key);			
+		} catch (NodeException e) {
+			return false;
+		}
 	}
 
 	public boolean containsValue(Object value) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("not implement yet");
 	}
 
 	public Object get(Object key) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!(key instanceof String)) {
+			throw new NodeException("only support string key");
+		}
+		String name = (String) key;
+		Node childNode = _getChildNode(name);
+		if (childNode.isTreeNode()) {
+			return this.getChildNode(name);
+		} else {
+			return this.getChildValue(name);
+		}
 	}
 
 	public Object put(String key, Object value) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NodeException("this is readonly Map");
 	}
 
 	public Object remove(Object key) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NodeException("this is readonly Map");
 	}
 
 	public void putAll(Map<? extends String, ? extends Object> t) {
-		// TODO Auto-generated method stub
-		
+		throw new NodeException("this is readonly Map");		
 	}
 
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		throw new NodeException("this is readonly Map");		
 	}
 
 	public Set<String> keySet() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return this.node.getChildMap(branches).keySet();			
+		} catch (NodeException e) {
+			return null;
+		}
 	}
 
 	public Collection<Object> values() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Object> ret  = new ArrayList<Object>();
+		for (String key : this.node.getChildMap(branches).keySet()) {
+			Node node = this.node.getChildNode(key);
+			if (node.isTreeNode()) {
+				ret.add(new QueryNode(node, this.branches));
+			} else {
+				ret.add(this.get(key));
+			}
+		}
+		return ret;
 	}
 
 	public Set<java.util.Map.Entry<String, Object>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("not implement yet");
 	}
-	
 
 }

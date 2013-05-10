@@ -248,6 +248,14 @@ public class Node {
 
 	}
 	
+	/**
+	 * Get child node map by branch.
+	 * 1. check is tree node. </br>
+	 * 2. get master map <br/>
+	 * 3. merge match sub map.<br/>
+	 * @param branch
+	 * @return
+	 */
 	public Map<String, Node> getChildMap(Branch branch) {
 		if (!this.isTreeNode && branchValues != null) {
 			throw new NodeException("this isn't tree node in path:" + this.path);
@@ -278,6 +286,51 @@ public class Node {
 		}
 		return ret;
 	}
+	
+	/**
+	 * get child map by branches.
+	 * merge all possible nodes.
+	 * 
+	 * @param branches
+	 * @return
+	 */
+	public Map<String, Node> getChildMap(List<Branch> branches) {
+		if (!this.isTreeNode && branchValues != null) {
+			throw new NodeException("this isn't tree node in path:" + this.path);
+		}
+		if (branchValues == null) {
+			throw new NodeException("branch value is null");
+		}
+		Map<String, Node> ret = null;
+		if (branchValues.containsKey(Branch.MASTER)) {
+			ret = (Map<String, Node>)branchValues.get(Branch.MASTER);
+			ret = new HashMap<String, Node>(ret); // clone master.
+		} else {
+			ret = new HashMap<String, Node>();
+		}
+		
+		Map<String, Node> subMap = null;
+		for (Branch branch: branches) {
+			for (Branch currentBranch : this.branchValues.keySet()) {
+				if (branch.matchLevel(currentBranch) > 0) {
+					subMap = (Map<String, Node>)this.branchValues.get(currentBranch);
+					for (String key : subMap.keySet()) {					
+						if (!ret.containsKey(key)) {
+							ret.put(key, subMap.get(key));							
+						}
+					}	
+				}
+			}	
+		}
+
+
+		if (ret.size() == 0) {
+			throw new NodeException("no child");
+		}
+		return ret;
+	}
+	
+	
 	/**
 	 * add child node and return subnode.
 	 * if node not exist, then create new node. If exists, then return old node.
@@ -331,15 +384,12 @@ public class Node {
 	public Node getChildNode(String name) {
 		if (!this.isTreeNode) {
 			throw new NodeException("this is leaf node");
-		}
-		for (Branch currentBranch : this.branchValues.keySet()) {
-			Map<String, Node> map = (Map<String, Node>)this.branchValues.get(currentBranch);
-			if (map.containsKey(name)) {
-				return map.get(name);
-			}
-		}
-		throw new NodeException("child node not exist");
+		}		
+		return this.allChildren.get(name);
 	}
+	
+	
+	
 	/**
 	 * get child's key set.
 	 * @return
@@ -352,7 +402,7 @@ public class Node {
 	 * get child's key set.
 	 * @return
 	 */
-	public Set<String> keySet(){		
+	public Set<String> masterBranchKeySet(){		
 		return this.keySet(Branch.MASTER);
 	}
 

@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.Yaml;
 public class RootNode extends Node {
 	private static Logger logger = Logger.getLogger(RootNode.class.getName());
 
-	
+	private int minBranchLevel = 0;
 	/**
 	 * construct of root node.
 	 * 
@@ -53,7 +53,14 @@ public class RootNode extends Node {
 					throw new NodeException("branch " + branch + " not exist");
 				}
 			}
-			
+			//
+			// loading sequence.
+			//
+			if (currentBranch.getBranchLevel() < this.minBranchLevel) {
+				throw new NodeException("can't load branch level " + currentBranch.getId());
+			} else {
+				this.minBranchLevel = currentBranch.getBranchLevel();
+			}
 			//
 			// init master node.
 			//

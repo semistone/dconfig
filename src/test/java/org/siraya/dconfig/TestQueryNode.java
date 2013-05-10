@@ -81,4 +81,8 @@ public class TestQueryNode {
 		
 		
 	}
+	
+	public void testSize() {
+		
+	}
 }
