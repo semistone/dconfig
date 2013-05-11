@@ -132,8 +132,21 @@ public class QueryNode implements Map<String, Object>{
 		return ret;
 	}
 
+	/**
+	 * quick implement.
+	 * 
+	 */
 	public Set<java.util.Map.Entry<String, Object>> entrySet() {
-		throw new UnsupportedOperationException("not implement yet");
+		Map<String,Object> ret=new HashMap<String, Object>();
+		for (String key : this.node.getChildMap(branches).keySet()) {
+			Node node = this.node.getChildNode(key);
+			if (node.isTreeNode()) {
+				ret.put(key, new QueryNode(node, this.branches));
+			} else {
+				ret.put(key,this.get(key));
+			}			
+		}
+		return ret.entrySet();
 	}
 
 }

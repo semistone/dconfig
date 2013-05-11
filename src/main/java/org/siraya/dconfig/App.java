@@ -1,7 +1,7 @@
 package org.siraya.dconfig;
 
 /**
- * Hello world!
+ * -in <input dir> -o <output_file> -f <output format> -q <query string>
  *
  */
 public class App 

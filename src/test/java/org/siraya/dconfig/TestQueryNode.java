@@ -4,7 +4,9 @@ import java.io.InputStream;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
+import org.yaml.snakeyaml.Yaml;
+
+import java.util.*;
 
 import junit.framework.Assert;
 public class TestQueryNode {
@@ -81,8 +83,51 @@ public class TestQueryNode {
 		
 		
 	}
-	
+	@Test
 	public void testSize() {
+		List<Branch> branches = this.devAndFr();
+		QueryNode node = new QueryNode(root, branches);
+		Assert.assertEquals(4, node.size());
+				
+	}
+	
+	private List<Branch> devAndFr() {
+		Branch developement = dimensions.getBranchMap("environment").get("development");
+		Branch fr_Test = dimensions.getBranchMap("lang").get("fr_Test");
+
+		ArrayList<Branch> branches = new ArrayList<Branch>();
+		branches.add(developement);
+		branches.add(fr_Test);
+		return branches;
+	}
+	@Test
+	public void testKeySet() {
+		List<Branch> branches = this.devAndFr();
+		QueryNode node = new QueryNode(root, branches);
+		for (String key :node.keySet()) {
+			System.out.println("key is "+key);			
+		}
+		Assert.assertEquals(4, node.keySet().size());
 		
+	}
+	
+	@Test
+	public void testGetChildNode() {
+		List<Branch> branches = this.devAndFr();
+		QueryNode node = new QueryNode(root, branches);
+		Object child = node.get("links");
+		Assert.assertEquals(QueryNode.class, child.getClass());
+		Object mail = ((QueryNode)child).get("mail");
+		Assert.assertEquals("http://mail_dev.yahoo.com", mail);
+	}
+	
+	@Test
+	public void testDump() {
+		List<Branch> branches = this.devAndFr();
+		QueryNode node = new QueryNode(root, branches);
+		Yaml yaml = new Yaml();
+		String x = yaml.dump(node);
+		System.out.println(x);
+		// just check no exception
 	}
 }
