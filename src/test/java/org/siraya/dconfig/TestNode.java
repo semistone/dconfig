@@ -116,8 +116,8 @@ public class TestNode {
 		Assert.assertEquals(4, map.size());
 		
 		
-		Branch production = dimensions.getBranchMap("environment").get("production");
-		map = root.getChildMap(production);
+		Branch fr_FR = dimensions.getBranchMap("lang").get("fr_FR");
+		map = root.getChildMap(fr_FR);
 		Assert.assertEquals(5, map.size());
 		
 		this.dump(root);

@@ -57,8 +57,11 @@ public class RootNode extends Node {
 			// loading sequence.
 			//
 			if (currentBranch.getBranchLevel() < this.minBranchLevel) {
-				throw new NodeException("can't load branch level " + currentBranch.getId());
+				throw new NodeException("can't load branch level " + currentBranch.getId() +
+						" min level is "+ this.minBranchLevel + 
+						" current level is "+ currentBranch.getBranchLevel());
 			} else {
+				logger.info("set min level for " + currentBranch.getId());
 				this.minBranchLevel = currentBranch.getBranchLevel();
 			}
 			//

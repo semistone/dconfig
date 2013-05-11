@@ -1,14 +1,7 @@
 #
 # test for master not exist node.
 #
--   settings: environment=production
-    data-url: http://service_dev.yahoo.com
-    production_only:
-       test1: 111
-       test2: 
-          test3: 999
-
--   settings: lang=fr
+-   settings: lang=fr_FR
     production_only:
        test1: 555
        test2: 
@@ -20,3 +13,9 @@
        test2: 
           test3: 555
           
+-   settings: lang=fr_Test
+    data-url: http://service_dev.yahoo.com
+    production_only:
+       test1: 111
+       test2: 
+          test3: 999
