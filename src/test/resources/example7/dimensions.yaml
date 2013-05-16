@@ -1,6 +1,8 @@
 dimensions: 
     environment:
         development:
+           trend.lava.tw
+             sco-app-rmx.trend.lava.tw
         testing: 
         preproduction:
         production:

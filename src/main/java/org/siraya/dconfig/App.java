@@ -4,6 +4,8 @@ import org.apache.commons.cli.*;
 import java.io.File;
 import java.util.*;
 import java.io.*;
+
+	
 /**
  * -in <input dir> -out <output_file> -format <output format> -query <query
  * string>
@@ -27,7 +29,7 @@ public class App {
 		options.addOption(out);
 		options.addOption(format);
 		options.addOption(query);
-
+		int formatType = 0;
 		try {
 			// parse the command line arguments
 			HelpFormatter formatter = new HelpFormatter();
@@ -36,12 +38,27 @@ public class App {
 			String inString = line.getOptionValue("in");
 			String queryString = line.getOptionValue("query");
 			String outString = line.getOptionValue("out");
-			QueryNode node = QueryNodeUtil.createQueryNode(inString, queryString);
-			
-			Yaml yaml = new Yaml();
-			String outputString = yaml.dump(node);			
+			String formatString = line.getOptionValue("format");
+			if (formatString == null) {
+				formatType = 0;
+			} else if ("ini".equals(formatString)) {
+				formatType = 1;
+			}
 			FileOutputStream os  = new java.io.FileOutputStream(outString);
-			os.write(outputString.getBytes());
+			QueryNode node = QueryNodeUtil.createQueryNode(inString, queryString);
+			String outputString = null;
+			switch(formatType){
+			case 1: //ini 				
+				QueryNodeUtil.saveToIni(node, os);
+				break;
+			case 0: //yaml
+				Yaml yaml = new Yaml();
+				outputString = yaml.dump(node);	
+				os.write(outputString.getBytes());
+			default:
+				break;
+			}
+		
 			os.flush();
 			os.close();
 		}catch (ParseException exp) {
