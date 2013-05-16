@@ -20,7 +20,8 @@ public class RootNode extends Node {
 	private static Logger logger = Logger.getLogger(RootNode.class.getName());
 	private Yaml yaml = new Yaml();
 	private int minBranchLevel = 0;
-	
+	private Dimensions dimensions;
+
 
 	/**
 	 * load RootNode by directory
@@ -39,7 +40,7 @@ public class RootNode extends Node {
 			}
 		});
 
-		Dimensions dimensions = null;
+		dimensions = null;
 		//
 		// load dimension
 		//
@@ -110,10 +111,11 @@ public class RootNode extends Node {
 	 * @param dimensions
 	 */
 	public RootNode(InputStream input, Dimensions dimensions) {
-		this.load(input, dimensions);
+		this.dimensions = dimensions;
+		this.load(input);
 	}
 	
-	public void load(InputStream input, Dimensions dimensions) {
+	public void load(InputStream input) {
 		logger.info("parsing yaml file and get root node");
 		Object root = yaml.load(input);
 		if (!(root instanceof List)) {
@@ -193,5 +195,8 @@ public class RootNode extends Node {
 		}
 	}
 	
+	public Dimensions getDimensions() {
+		return dimensions;
+	}
 
 }

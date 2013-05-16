@@ -23,11 +23,11 @@ public class TestQueryNode {
 		root = new RootNode(in, dimensions);
 		InputStream in1 = getClass().getClassLoader().getResourceAsStream(
 				"example2.yaml");
-		root.load(in1, dimensions);
+		root.load(in1);
 
 		InputStream in3 = getClass().getClassLoader().getResourceAsStream(
 				"example5.yaml");
-		root.load(in3, dimensions);
+		root.load(in3);
 		
 	}
 

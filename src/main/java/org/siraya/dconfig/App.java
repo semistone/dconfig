@@ -1,8 +1,8 @@
 package org.siraya.dconfig;
-
+import org.yaml.snakeyaml.Yaml;
 import org.apache.commons.cli.*;
-import org.apache.commons.cli.BasicParser;
-
+import java.io.File;
+import java.util.*;
 /**
  * -in <input dir> -out <output_file> -format <output format> -query <query
  * string>
@@ -33,7 +33,14 @@ public class App {
 			formatter.printHelp( "dconfig", options );
 			CommandLine line = parser.parse(options, args);
 			String inString = line.getOptionValue("in");
-			System.out.println("parse inString " + inString);
+			String queryString = line.getOptionValue("query");
+			
+			QueryNode node = QueryNodeUtil.createQueryNode(inString, queryString);
+			
+			Yaml yaml = new Yaml();
+			String outputString = yaml.dump(node);
+			System.out.println(outputString);
+
 		}catch (ParseException exp) {
 			// oops, something went wrong
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());

@@ -28,11 +28,11 @@ public class TestNode {
 		root = new RootNode(in, dimensions);
 		InputStream in1 = getClass().getClassLoader().getResourceAsStream(
 				"example2.yaml");
-		root.load(in1, dimensions);
+		root.load(in1);
 		
 		InputStream in3 = getClass().getClassLoader().getResourceAsStream(
 				"example5.yaml");
-		root.load(in3, dimensions);
+		root.load(in3);
 	}
 	
 	@After
@@ -81,7 +81,7 @@ public class TestNode {
 	public void testDuplicateLoad(){
 		InputStream in4 = getClass().getClassLoader().getResourceAsStream(
 				"example5.yaml");
-		root.load(in4, dimensions);
+		root.load(in4);
 	}
 	
 	@Test
@@ -108,7 +108,7 @@ public class TestNode {
 	public void testNewNodeInBranch(){
 		InputStream in3 = getClass().getClassLoader().getResourceAsStream(
 				"example6.yaml");
-		root.load(in3, dimensions);
+		root.load(in3);
 		
 		Branch developement = dimensions.getBranchMap("environment").get("development");	
 		Map<String,Node> map = root.getChildMap(developement);
