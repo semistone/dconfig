@@ -17,7 +17,9 @@ public class App {
 		Option format = OptionBuilder.withArgName("fotmat").hasArg()
 				.withDescription("output format").isRequired(false)
 				.create("format");
-		Option out = new Option("out", "input file");
+		Option out = OptionBuilder.withArgName("out").hasArg()
+				.withDescription("output file").isRequired(true)
+				.create("out");
 		Option query = OptionBuilder.withArgName("query").hasArg()
 				.withDescription("query string").isRequired(false)
 				.create("query");
