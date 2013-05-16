@@ -3,6 +3,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.apache.commons.cli.*;
 import java.io.File;
 import java.util.*;
+import java.io.*;
 /**
  * -in <input dir> -out <output_file> -format <output format> -query <query
  * string>
@@ -34,13 +35,15 @@ public class App {
 			CommandLine line = parser.parse(options, args);
 			String inString = line.getOptionValue("in");
 			String queryString = line.getOptionValue("query");
-			
+			String outString = line.getOptionValue("out");
 			QueryNode node = QueryNodeUtil.createQueryNode(inString, queryString);
 			
 			Yaml yaml = new Yaml();
-			String outputString = yaml.dump(node);
-			System.out.println(outputString);
-
+			String outputString = yaml.dump(node);			
+			FileOutputStream os  = new java.io.FileOutputStream(outString);
+			os.write(outputString.getBytes());
+			os.flush();
+			os.close();
 		}catch (ParseException exp) {
 			// oops, something went wrong
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
