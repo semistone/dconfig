@@ -1,0 +1,23 @@
+dimensions: 
+    environment:
+        development:
+        testing: 
+        preproduction:
+        production:
+    site:
+    device:
+    lang:
+        en:
+            en_US: 
+            en_GB: 
+            en_CA: 
+        fr:
+            fr_FR:
+                fr_CA:
+                  fr_Test:
+                          
+    region:
+         us:
+         ca:
+         gb:
+            ir:

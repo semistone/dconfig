@@ -5,7 +5,9 @@ import java.util.logging.Level;
 import org.junit.Test;
 import org.junit.Before;
 import org.siraya.dconfig.RootNode;
+import java.io.File;
 
+import junit.framework.Assert;
 public class TestRootNode {
 	Dimensions dimensions;
 
@@ -71,5 +73,12 @@ public class TestRootNode {
 				"example1.yaml");
 		RootNode root = new RootNode(in, dimensions);
 		root.finalize();
+	}
+	
+	@Test
+	public void testLoadFromDirectory()throws Exception{
+		File test = new File("src/test/resources/example7");
+		RootNode node = new RootNode(test);
+		Assert.assertEquals(4,node.size(Branch.MASTER));
 	}
 }

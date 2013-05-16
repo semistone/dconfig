@@ -8,7 +8,7 @@ package org.siraya.dconfig;
  * @author angus_chen
  *
  */
-public class Branch{
+public class Branch implements Comparable<Branch>{
 	public static Branch MASTER;
 	
 	private Branch levelOneBranch;
@@ -185,6 +185,15 @@ public class Branch{
 		} else {
 			return this.getLevelOneBranch().equals(obj.getLevelOneBranch());			
 		}
+	}
+	
+	/**
+	 * compare branch level only.
+	 * @param o
+	 * @return
+	 */
+	public int compareTo(Branch o){
+		return new Integer(this.getBranchLevel()).compareTo(o.getBranchLevel());
 	}
 	
 }
