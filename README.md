@@ -15,8 +15,9 @@ Jar file can download from http://angus-ec2.siraya.net/dconfig.jar
 
    
 ### Input structure
-Input file only support yaml format now. 
+Input file only support yaml format now, and output format support yaml and ini format.
 Must include at least one dimensions.yaml and many other yaml files.
+If use ini format, the config structure only support two layer.
 The example can be found in https://github.com/semistone/dconfig/tree/master/src/test/resources 
 ### dimensions.yaml
     dimensions: 
@@ -45,10 +46,10 @@ The example can be found in https://github.com/semistone/dconfig/tree/master/src
             home: http://www.yahoo.com
             mail: http://mail.yahoo.com
 ### sample1.yaml     
--   settings: environment=development
-    data-url: http://service_dev.yahoo.com
-    links: 
-        mail: http://mail_dev.yahoo.com
+    -   settings: environment=development
+        data-url: http://service_dev.yahoo.com
+        links: 
+            mail: http://mail_dev.yahoo.com
 
 ### How to use:
     java -jar dconfig.jar
@@ -59,4 +60,5 @@ The example can be found in https://github.com/semistone/dconfig/tree/master/src
      -query <query>     query string
 
 ###Command Example
-    java -jar dconfig.jar -in example7 -out example7.yaml -query 'lang=en'
+    java -jar dconfig.jar -in example7 -format yaml -out example7.yaml -query 'lang=en'
+    java -jar dconfig.jar -in example7 -format ini -out example7.yaml -query 'lang=en'
