@@ -25,6 +25,9 @@ public class QueryNodeUtil {
 		for (String key: input.keySet()) {
 			Ini.Section section = iniFile.add(key);
 			Object tmp = input.get(key);
+            if (tmp == null) {
+                continue;
+            }
 			if (!(tmp instanceof Map)) {
 				throw new NodeException("section must be map");
 			}
@@ -32,6 +35,9 @@ public class QueryNodeUtil {
 			Map<String,Object> sectionData = (Map<String,Object>)tmp;
 			for (String key2 : sectionData.keySet()) {
 				Object obj = sectionData.get(key2);
+                if (obj == null) {
+                    obj = "";
+                }
 				section.put(key2, obj.toString());
 			}
 		}
