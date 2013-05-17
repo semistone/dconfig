@@ -148,7 +148,14 @@ public class RootNode extends Node {
 		} else {
 			logger.info("load branch " + branch);
 			String[] tmp = branch.split("=");
-			currentBranch = dimensions.getBranchMap(tmp[0]).get(tmp[1]);
+			if (tmp.length != 2) {
+                throw new NodeException(branch + " format error ");
+            }
+            Map<String,Branch> map = dimensions.getBranchMap(tmp[0]);
+			if (map == null) {
+                throw new NodeException("key "+ tmp[0] + " not exist ");
+            }
+			currentBranch = map.get(tmp[1]);
 			if (currentBranch == null) {
 				throw new NodeException("branch " + branch + " not exist");
 			}

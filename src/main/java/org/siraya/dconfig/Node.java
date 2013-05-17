@@ -81,7 +81,7 @@ public class Node {
 	 */
 	public void setValue(Branch branch, Object value) {
 		if (this.isTreeNode) {
-			throw new NodeException("tree node can't set value");
+			throw new NodeException("tree node " + path +" can't set value");
 		}
 		if (value instanceof Map) {
 			throw new NodeException("value can't be Map object");

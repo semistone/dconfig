@@ -61,7 +61,14 @@ public class QueryNodeUtil {
 		List<Branch> branches = new ArrayList<Branch>();
 		for (String condition: queryString.split(";")){
 			String[] tmp = condition.split("=");
-			Branch currentBranch = dimensions.getBranchMap(tmp[0]).get(tmp[1]);
+            Map<String,Branch> map = dimensions.getBranchMap(tmp[0]);
+            if (map == null) {
+                 throw new NodeException("branch for "+ tmp[0] + " not exist");
+            }
+			Branch currentBranch = map.get(tmp[1]);
+            if (currentBranch == null) {
+                 throw new NodeException("branch for "+ tmp[1] + " not exist");
+            }
 			branches.add(currentBranch);
 		}
 		QueryNode node = new QueryNode(root, branches);
