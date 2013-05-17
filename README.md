@@ -3,76 +3,60 @@ dconfig
 
 Config library with dimension concept
 
-Config folder structure
----------
-###dimension.yaml
-    country:
-       en:
-          - uk
-          - us
-       zh:
-          - tw
-          - cn
-          - hk
-    environment:
-        alpha:
-        beta:
-        staging:
-            tp2:
-            tpe:      
-        production:
-            tp2:
-                farm1:
-                farm2:
-                farm3:
-            tpe:      
-                farm1:
-                farm2:
-                farm3:
-    
-###main.yaml
-    var1: 123
-    var2:
-       var21: xyz
-       var22: mmm
+Inspire by Yahoo YCB library
+https://npmjs.org/package/ycb
+The config files structure and format is reference to  
+https://github.com/yahoo/ycb/tree/master/tests
 
-###en.yaml
-    var1: 555
+Now only implement command line to generate config file by different dimensions variable
 
-###en-us.yaml
-    var1: 666
+### Download jar file
+Jar file can download from http://angus-ec2.siraya.net/dconfig.jar
 
-###alpha:
-    var2:
-       var21: 555
+   
+### Input structure
+Input file only support yaml format now. 
+Must include at least one dimensions.yaml and many other yaml files.
+The example can be found in https://github.com/semistone/dconfig/tree/master/src/test/resources 
+### dimensions.yaml
+    dimensions: 
+        environment:
+            development:
+            testing: 
+            preproduction:
+            production:
+        site:
+        device:
+        lang:
+            en:
+                en_US: 
+                en_GB: 
+                en_CA: 
+            fr:
+                fr_FR:
+                    fr_CA:
+                      fr_Test:
+### main.yaml     
+    -   settings: master
+        title_key: YRB_YAHOO
+        data-url: http://service.yahoo.com
+        logo: yahoo.png
+        links: 
+            home: http://www.yahoo.com
+            mail: http://mail.yahoo.com
+### sample1.yaml     
+-   settings: environment=development
+    data-url: http://service_dev.yahoo.com
+    links: 
+        mail: http://mail_dev.yahoo.com
 
-###beta:
-    var1: 888
+### How to use:
+    java -jar dconfig.jar
+    usage: dconfig
+     -format <fotmat>   output format
+     -in <in>           input file
+     -out <out>         output file
+     -query <query>     query string
 
-###production-tp2-farm1.yaml:
-    var2:
-       var21: 666
-       var21: 777
-
-API Behavior
----------
-###If variable defined in sub dimension file
-    DConfig config = new DConfig("/usr/local/etc/example/", "country=en-us;environment=alpha");
-    Assert.equal(666, config.get("var1"));  #  from en-us.yaml
-    Assert.equal(555, config.get("var2.var21")); # from alpha.yaml
-
-###If not define in sub dimension file, get from main.yaml
-    DConfig config = new DConfig("/usr/local/etc/example/", "country=en-uk;environment=alpha");
-    Assert.equal('mmm', config.get("var2.var22"));  # from main.yaml
-    Assert.equal(555, config.get("var1"));  # not found in en-uk, then search from en.yaml
-
-###If Conflict happen, then order by calling sequence, for example "country=zh;environment=alpha"  country got hight priority. If "environment=alpha;country=zh", then environment is higher priority.
-    DConfig config = new DConfig("/usr/local/etc/example/", "country=en;environment=beta");
-    Assert.equal(555, config.get("var1")); # from en.yaml
-    DConfig config = new DConfig("/usr/local/etc/example/", "environment=beta;country=en");
-    Assert.equal(888, config.get("var1")); # from beta.yaml
-
-
-###Dimension can be very deep
-    DConfig config = new DConfig("/usr/local/etc/example/", "environment=production-tp2-farm1");
-    Assert.equal(666, config.get("var2.var21")); # production-tp2-farm1.yaml
+###Command Example
+    java -jar dconfig.jar -in example7 -out example7.yaml -query 'lang=en'
