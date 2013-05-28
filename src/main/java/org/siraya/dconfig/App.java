@@ -25,12 +25,16 @@ public class App {
 		Option query = OptionBuilder.withArgName("query").hasArg()
 				.withDescription("query string").isRequired(false)
 				.create("query");
+		Option dump = OptionBuilder.withArgName("dump").hasArg()
+                .withDescription("dump internal structure").isRequired(false)
+				.create("dump");
 		Options options = new Options();
 
 		options.addOption(in);
 		options.addOption(out);
 		options.addOption(format);
 		options.addOption(query);
+		options.addOption(dump);
 		int formatType = 0;
 		try {
 			// parse the command line arguments
@@ -63,6 +67,15 @@ public class App {
 		
 			os.flush();
 			os.close();
+            if(line.hasOption("dump")) {
+			    String dumpString = line.getOptionValue("dump");
+			    FileOutputStream dos  = new java.io.FileOutputStream(dumpString);
+		        StringBuffer sb = new StringBuffer();
+                node.node.dump(sb);
+                dos.write(sb.toString().getBytes());
+                dos.flush();
+                dos.close();
+            }
 		}catch (ParseException exp) {
 			// oops, something went wrong
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
