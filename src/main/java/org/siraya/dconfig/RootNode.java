@@ -54,7 +54,7 @@ public class RootNode extends Node {
 			throw new NodeException("dimensions.yaml not found");
 		}
 		Yaml yaml = new Yaml();
-		Map<Branch, Map<String, Object>> map =new HashMap<Branch, Map<String, Object>>();
+		Map<Branch, List<Map<String, Object>>> map =new HashMap<Branch, List<Map<String, Object>>>();
 		//
 		//
 		//
@@ -71,15 +71,24 @@ public class RootNode extends Node {
 			
 			for (Map<String, Object> setting : (List<Map<String, Object>>) root) {
 				Branch currentBranch = RootNode.getCurrentBranch(dimensions, setting);
-				map.put(currentBranch, setting);
+                if(!map.containsKey(currentBranch)){
+                    List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+                    list.add(setting);
+				    map.put(currentBranch, list);
+                } else {
+                    List<Map<String,Object>> list = ( List<Map<String,Object>>)map.get(currentBranch);
+                    list.add(setting);
+                }
 			}
 		}
 		
-		Map<Branch, Map<String, Object>> result = this.sortByKeys(map);
+		Map<Branch, List<Map<String, Object>>> result = this.sortByKeys(map);
 		for (Branch currentBranch: result.keySet()) {
 			logger.info("start parsing branch "+currentBranch.getId());
-			Map<String, Object> setting = map.get(currentBranch);
-			this.parse(currentBranch, setting);
+            List<Map<String,Object>> list = map.get(currentBranch);
+            for (Map setting: list) {
+			   this.parse(currentBranch, (Map<String, Object>)setting);
+            }
 		}
 	}
     
