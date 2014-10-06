@@ -40,8 +40,8 @@ public class Node {
     }
 
     public Node(final Node theParentNode, final String name) {
-        this.path = this.parentNode.path + "/" + name;
         this.parentNode = theParentNode;
+        this.path = theParentNode.path + "/" + name;
         this.nodeLevel = theParentNode.getNodeLevel() + 1;
         Node.logger.info("new node in " + this.path + " level:"
                 + this.nodeLevel);
