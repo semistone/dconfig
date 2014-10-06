@@ -32,7 +32,8 @@ public class QueryNodeUtil {
                 continue;
             }
             if (!(tmp instanceof Map)) {
-                throw new NodeException("section must be map");
+                throw new NodeException("section key:" + key
+                        + " must be map object but " + tmp.getClass().getName());
             }
 
             final Map<String, Object> sectionData = (Map<String, Object>) tmp;
