@@ -2,7 +2,7 @@ package org.siraya.dconfig;
 
 public class NodeException extends RuntimeException {
 
-	public NodeException(String msg){
-		super(msg);
-	}
+    public NodeException(final String msg) {
+        super(msg);
+    }
 }
