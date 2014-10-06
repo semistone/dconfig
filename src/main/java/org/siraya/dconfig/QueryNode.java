@@ -2,7 +2,7 @@ package org.siraya.dconfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +140,7 @@ public class QueryNode implements Map<String, Object> {
      * 
      */
     public Set<java.util.Map.Entry<String, Object>> entrySet() {
-        final Map<String, Object> ret = new HashMap<String, Object>();
+        final Map<String, Object> ret = new LinkedHashMap<String, Object>();
         for (final String key : this.node.getChildMap(this.branches).keySet()) {
             final Node node = this.node.getChildNode(key);
             if (node.isTreeNode()) {

@@ -1,7 +1,7 @@
 package org.siraya.dconfig;
 
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -20,7 +20,7 @@ public class Dimensions {
     // value is Map<String, Branch> , key is level one branch
     //
     //
-    private final Map<String, Map<String, Branch>> branchGroupByLevelOneBranch = new HashMap<String, Map<String, Branch>>();
+    private final Map<String, Map<String, Branch>> branchGroupByLevelOneBranch = new LinkedHashMap<String, Map<String, Branch>>();
 
     public Dimensions(final InputStream input) {
         final Yaml yaml = new Yaml();
@@ -53,7 +53,7 @@ public class Dimensions {
                             + current.getLevelOneBranch().getId());
                     this.branchGroupByLevelOneBranch.put(current
                             .getLevelOneBranch().getId(),
-                            new HashMap<String, Branch>());
+                            new LinkedHashMap<String, Branch>());
                 } else {
                     this.branchGroupByLevelOneBranch.get(
                             current.getLevelOneBranch().getId()).put(key,

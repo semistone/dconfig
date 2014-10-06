@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class RootNode extends Node {
             throw new NodeException("dimensions.yaml not found");
         }
         final Yaml yaml = new Yaml();
-        final Map<Branch, List<Map<String, Object>>> map = new HashMap<Branch, List<Map<String, Object>>>();
+        final Map<Branch, List<Map<String, Object>>> map = new LinkedHashMap<Branch, List<Map<String, Object>>>();
         //
         //
         //

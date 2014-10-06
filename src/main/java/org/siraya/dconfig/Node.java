@@ -1,7 +1,7 @@
 package org.siraya.dconfig;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +25,7 @@ public class Node {
     //
     // value is list , key is level one branch.
     //
-    private final Map<Branch, List<Branch>> branchGroupByLevelOneBranch = new HashMap<Branch, List<Branch>>();
+    private final Map<Branch, List<Branch>> branchGroupByLevelOneBranch = new LinkedHashMap<Branch, List<Branch>>();
 
     private int nodeLevel;
 
@@ -90,7 +90,7 @@ public class Node {
             throw new NodeException("value can't be Map object");
         }
         if (this.branchValues == null) {
-            this.branchValues = new HashMap<Branch, Object>();
+            this.branchValues = new LinkedHashMap<Branch, Object>();
         }
 
         if (this.branchValues.containsKey(branch)) {
@@ -175,7 +175,7 @@ public class Node {
         // map key is match level, value is branch
         // and sort by match level.
         //
-        final HashMap<Integer, Branch> map = new HashMap<Integer, Branch>();
+        final Map<Integer, Branch> map = new LinkedHashMap<Integer, Branch>();
         for (final Branch localBranch : branches) {
             Node.logger.fine("level " + branch.matchLevel(localBranch)
                     + " local branch id " + localBranch.getId()
@@ -214,8 +214,8 @@ public class Node {
         }
         this.isTreeNode = true;
         if (this.branchValues == null) {
-            this.branchValues = new HashMap<Branch, Object>();
-            this.allChildren = new HashMap<String, Node>();
+            this.branchValues = new LinkedHashMap<Branch, Object>();
+            this.allChildren = new LinkedHashMap<String, Node>();
         }
 
         //
@@ -225,7 +225,7 @@ public class Node {
         if (branch.equals(Branch.MASTER)) {
             children = (Map<String, Node>) this.branchValues.get(Branch.MASTER);
             if (children == null) {
-                children = new HashMap<String, Node>();
+                children = new LinkedHashMap<String, Node>();
                 this.branchValues.put(branch, children);
             }
             return children;
@@ -256,7 +256,7 @@ public class Node {
             }
         }
         if (children == null) {
-            children = new HashMap<String, Node>();
+            children = new LinkedHashMap<String, Node>();
             this.branchValues.put(branch, children);
         }
         return children;
@@ -281,9 +281,9 @@ public class Node {
         Map<String, Node> ret = null;
         if (this.branchValues.containsKey(Branch.MASTER)) {
             ret = (Map<String, Node>) this.branchValues.get(Branch.MASTER);
-            ret = new HashMap<String, Node>(ret); // clone master.
+            ret = new LinkedHashMap<String, Node>(ret); // clone master.
         } else {
-            ret = new HashMap<String, Node>();
+            ret = new LinkedHashMap<String, Node>();
         }
 
         Map<String, Node> subMap = null;
@@ -319,9 +319,9 @@ public class Node {
         Map<String, Node> ret = null;
         if (this.branchValues.containsKey(Branch.MASTER)) {
             ret = (Map<String, Node>) this.branchValues.get(Branch.MASTER);
-            ret = new HashMap<String, Node>(ret); // clone master.
+            ret = new LinkedHashMap<String, Node>(ret); // clone master.
         } else {
-            ret = new HashMap<String, Node>();
+            ret = new LinkedHashMap<String, Node>();
         }
 
         Map<String, Node> subMap = null;
