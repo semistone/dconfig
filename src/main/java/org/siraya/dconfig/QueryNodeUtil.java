@@ -12,7 +12,7 @@ import org.ini4j.Ini;
 
 public class QueryNodeUtil {
 
-    private static Logger logger = Logger.getLogger(QueryNodeUtil.class
+    final private static Logger logger = Logger.getLogger(QueryNodeUtil.class
             .getName());
 
     /**

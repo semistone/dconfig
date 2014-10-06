@@ -52,24 +52,24 @@ public class Branch implements Comparable<Branch> {
         return this.id;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public void setId(final String theId) {
+        this.id = theId;
     }
 
     public Branch getParentBranch() {
         return this.parentBranch;
     }
 
-    public void setParentBranch(final Branch parentBranch) {
-        this.parentBranch = parentBranch;
+    public void setParentBranch(final Branch theParentBranch) {
+        this.parentBranch = theParentBranch;
     }
 
     public int getBranchLevel() {
         return this.branchLevel;
     }
 
-    public void setBranchLevel(final int branchLevel) {
-        this.branchLevel = branchLevel;
+    public void setBranchLevel(final int theBranchLevel) {
+        this.branchLevel = theBranchLevel;
     }
 
     public Branch getLevelOneBranch() {
@@ -99,9 +99,10 @@ public class Branch implements Comparable<Branch> {
             } else {
                 return false;
             }
-        } else {
-            return false;
         }
+
+        return false;
+
     }
 
     /**
@@ -134,12 +135,12 @@ public class Branch implements Comparable<Branch> {
 
         if (obj.equals(compareBranch)) {
             return compareBranch.getBranchLevel();
-        } else {
-            //
-            // not match branch.
-            //
-            return -1;
         }
+        //
+        // not match branch.
+        //
+        return -1;
+
     }
 
     /**
@@ -183,9 +184,10 @@ public class Branch implements Comparable<Branch> {
         if ((this.getLevelOneBranch() == null)
                 && (obj.getLevelOneBranch() == null)) {
             return true;
-        } else {
-            return this.getLevelOneBranch().equals(obj.getLevelOneBranch());
         }
+
+        return this.getLevelOneBranch().equals(obj.getLevelOneBranch());
+
     }
 
     /**

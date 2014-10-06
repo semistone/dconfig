@@ -11,9 +11,9 @@ public class QueryNode implements Map<String, Object> {
     Node node;
     List<Branch> branches;
 
-    public QueryNode(final Node node, final List<Branch> branches) {
-        this.node = node;
-        this.branches = branches;
+    public QueryNode(final Node theNode, final List<Branch> theBranches) {
+        this.node = theNode;
+        this.branches = theBranches;
     }
 
     private QueryNode getChildNode(final String name) {
@@ -49,11 +49,7 @@ public class QueryNode implements Map<String, Object> {
             }
         }
 
-        if (value == null) { // get default master value.
-            return childNode.getMasterValue();
-        } else {
-            throw new NodeException("impossible here.");
-        }
+        return childNode.getMasterValue();
 
     }
 
@@ -93,9 +89,9 @@ public class QueryNode implements Map<String, Object> {
         final Node childNode = this._getChildNode(name);
         if (childNode.isTreeNode()) {
             return this.getChildNode(name);
-        } else {
-            return this.getChildValue(name);
         }
+        return this.getChildValue(name);
+
     }
 
     public Object put(final String key, final Object value) {
@@ -125,9 +121,9 @@ public class QueryNode implements Map<String, Object> {
     public Collection<Object> values() {
         final Collection<Object> ret = new ArrayList<Object>();
         for (final String key : this.node.getChildMap(this.branches).keySet()) {
-            final Node node = this.node.getChildNode(key);
-            if (node.isTreeNode()) {
-                ret.add(new QueryNode(node, this.branches));
+            final Node theNode = this.node.getChildNode(key);
+            if (theNode.isTreeNode()) {
+                ret.add(new QueryNode(theNode, this.branches));
             } else {
                 ret.add(this.get(key));
             }
@@ -142,9 +138,9 @@ public class QueryNode implements Map<String, Object> {
     public Set<java.util.Map.Entry<String, Object>> entrySet() {
         final Map<String, Object> ret = new LinkedHashMap<String, Object>();
         for (final String key : this.node.getChildMap(this.branches).keySet()) {
-            final Node node = this.node.getChildNode(key);
-            if (node.isTreeNode()) {
-                ret.put(key, new QueryNode(node, this.branches));
+            final Node theNode = this.node.getChildNode(key);
+            if (theNode.isTreeNode()) {
+                ret.put(key, new QueryNode(theNode, this.branches));
             } else {
                 ret.put(key, this.get(key));
             }

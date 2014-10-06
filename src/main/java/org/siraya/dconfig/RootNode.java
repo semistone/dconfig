@@ -23,7 +23,8 @@ import org.yaml.snakeyaml.Yaml;
  * 
  */
 public class RootNode extends Node {
-    private static Logger logger = Logger.getLogger(RootNode.class.getName());
+    final private static Logger logger = Logger.getLogger(RootNode.class
+            .getName());
     private final Yaml yaml = new Yaml();
     private int minBranchLevel = 0;
     private Dimensions dimensions;
@@ -60,7 +61,7 @@ public class RootNode extends Node {
         if (this.dimensions == null) {
             throw new NodeException("dimensions.yaml not found");
         }
-        final Yaml yaml = new Yaml();
+        final Yaml theYaml = new Yaml();
         final Map<Branch, List<Map<String, Object>>> map = new LinkedHashMap<Branch, List<Map<String, Object>>>();
         //
         //
@@ -71,7 +72,7 @@ public class RootNode extends Node {
             }
 
             RootNode.logger.info("parsing yaml file and get root node");
-            final Object root = yaml.load(new java.io.FileInputStream(file));
+            final Object root = theYaml.load(new java.io.FileInputStream(file));
             if (!(root instanceof List)) {
                 throw new NodeException("config must start with list object");
             }
@@ -97,7 +98,7 @@ public class RootNode extends Node {
             RootNode.logger.info("start parsing branch "
                     + currentBranch.getId());
             final List<Map<String, Object>> list = map.get(currentBranch);
-            for (final Map setting : list) {
+            for (final Map<String, Object> setting : list) {
                 this.parse(currentBranch, setting);
             }
         }
@@ -132,8 +133,8 @@ public class RootNode extends Node {
      * @param input
      * @param dimensions
      */
-    public RootNode(final InputStream input, final Dimensions dimensions) {
-        this.dimensions = dimensions;
+    public RootNode(final InputStream input, final Dimensions theDimensions) {
+        this.dimensions = theDimensions;
         this.load(input);
     }
 
@@ -199,10 +200,10 @@ public class RootNode extends Node {
                     + currentBranch.getId() + " min level is "
                     + this.minBranchLevel + " current level is "
                     + currentBranch.getBranchLevel());
-        } else {
-            RootNode.logger.info("set min level for " + currentBranch.getId());
-            this.minBranchLevel = currentBranch.getBranchLevel();
         }
+        RootNode.logger.info("set min level for " + currentBranch.getId());
+        this.minBranchLevel = currentBranch.getBranchLevel();
+
         //
         // init master node.
         //

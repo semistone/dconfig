@@ -39,10 +39,10 @@ public class Node {
         this.isTreeNode = true;
     }
 
-    public Node(final Node parentNode, final String name) {
-        this.path = parentNode.path + "/" + name;
-        this.parentNode = parentNode;
-        this.nodeLevel = parentNode.getNodeLevel() + 1;
+    public Node(final Node theParentNode, final String name) {
+        this.path = this.parentNode.path + "/" + name;
+        this.parentNode = theParentNode;
+        this.nodeLevel = theParentNode.getNodeLevel() + 1;
         Node.logger.info("new node in " + this.path + " level:"
                 + this.nodeLevel);
     }
@@ -51,8 +51,8 @@ public class Node {
         return this.nodeLevel;
     }
 
-    public void setNodeLevel(final int nodeLevel) {
-        this.nodeLevel = nodeLevel;
+    public void setNodeLevel(final int theNodeLevel) {
+        this.nodeLevel = theNodeLevel;
     }
 
     public Node getParentNode() {
@@ -140,9 +140,8 @@ public class Node {
         final Object ret = this._getValue(branch);
         if (ret == null) {
             return this.branchValues.get(Branch.MASTER);
-        } else {
-            return ret;
         }
+        return ret;
     }
 
     /**
@@ -255,10 +254,10 @@ public class Node {
                 return (Map<String, Node>) this.branchValues.get(currentBranch);
             }
         }
-        if (children == null) {
-            children = new LinkedHashMap<String, Node>();
-            this.branchValues.put(branch, children);
-        }
+
+        children = new LinkedHashMap<String, Node>();
+        this.branchValues.put(branch, children);
+
         return children;
 
     }
@@ -427,8 +426,8 @@ public class Node {
         return this.path;
     }
 
-    public void setPath(final String path) {
-        this.path = path;
+    public void setPath(final String thePath) {
+        this.path = thePath;
     }
 
     public int size(final Branch branch) {
