@@ -71,10 +71,10 @@ public class RootNode extends Node {
                 continue;
             }
 
-            RootNode.logger.info("parsing yaml file and get root node");
+            RootNode.logger.info("parsing yaml file " + file.getName() + " and get root node");
             final Object root = theYaml.load(new java.io.FileInputStream(file));
             if (!(root instanceof List)) {
-                throw new NodeException("config must start with list object");
+                throw new NodeException("config " + file.getName() + "must start with list object");
             }
 
             for (final Map<String, Object> setting : (List<Map<String, Object>>) root) {
