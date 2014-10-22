@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -46,7 +47,7 @@ public class RootNode extends Node {
                 return name.toLowerCase().endsWith(".yaml");
             }
         });
-
+        Arrays.sort(files);
         this.dimensions = null;
         //
         // load dimension
@@ -71,10 +72,12 @@ public class RootNode extends Node {
                 continue;
             }
 
-            RootNode.logger.info("parsing yaml file " + file.getName() + " and get root node");
+            RootNode.logger.info("parsing yaml file " + file.getName()
+                    + " and get root node");
             final Object root = theYaml.load(new java.io.FileInputStream(file));
             if (!(root instanceof List)) {
-                throw new NodeException("config " + file.getName() + "must start with list object");
+                throw new NodeException("config " + file.getName()
+                        + "must start with list object");
             }
 
             for (final Map<String, Object> setting : (List<Map<String, Object>>) root) {
